@@ -16,7 +16,7 @@ jobs:
     - uses: msys2/setup-msys2@v2
       with:
         msystem: MINGW64
-        install: make zlib git 7z gcc
+        install: make zlib git p7zip gcc
         update: true
     - name: display versions
       run: |
