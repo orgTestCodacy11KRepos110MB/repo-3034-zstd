@@ -4,22 +4,19 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  pull_request:
+  push:
     branches: [ release, test_artifacts, win_artifacts ]
 
 jobs:
   windows-artifacts:
+    # see https://ariya.io/2020/07/on-github-actions-with-msys2
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # tag=v3
     - uses: msys2/setup-msys2@v2
       with:
         msystem: MINGW64
-        install: make zlib git 7z
-        update: true
-    # Based on https://ariya.io/2020/07/on-github-actions-with-msys2
-    - name: install mingw gcc
-      run: pacman --noconfirm -S gcc
+        install: make zlib git 7z gcc
     - name: win64 artifact generation with mingw gcc
       run: >-
         SET "PATH_ORIGINAL=%PATH%" &&
