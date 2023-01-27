@@ -26,25 +26,24 @@ jobs:
       run: |
         git clone --depth 1 --branch v1.2.11 https://github.com/madler/zlib
         make -C zlib -f win32/Makefile.gcc libz.a
-        pwd
-        ls -las
-        ls -las zlib
     - name: Building zstd
       run: |
-        pwd
-        ls -las
-        ls -las zlib
-        ls -las zlib/libz.a
         CPPFLAGS=-I../zlib LDFLAGS=../zlib/libz.a make -j allzstd MOREFLAGS=-static
-    - name: Create artifacts
+
+    - name: Create simple binary artifacts
       run: |
-        ls -las
         ./lib/dll/example/build_package.bat
         make -C programs DEBUGFLAGS= clean zstd
         cd programs/
-        7z a -tzip -mx9 zstd-win-binary-%PLATFORM%.zip zstd.exe
+        7z a -tzip -mx9 zstd-win-binary-win64.zip zstd.exe
         ls -las
-#        appveyor PushArtifact zstd-win-binary-%PLATFORM%.zip &&
+
+    - name: Upload binary artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: zstd-win-binary-win64.zip
+        path: /d/a/zstd/zstd/programs/zstd-win-binary-win64.zip
+
 #        cp zstd.exe ..\bin\zstd.exe &&
 #        git clone --depth 1 --branch release https://github.com/facebook/zstd &&
 #        cd zstd &&
