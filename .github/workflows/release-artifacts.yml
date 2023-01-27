@@ -5,7 +5,7 @@ concurrency:
 
 on:
   pull_request:
-    branches: [ release, test_artifacts ]
+    branches: [ release, test_artifacts, win_artifacts ]
 
 jobs:
   windows-artifacts:
