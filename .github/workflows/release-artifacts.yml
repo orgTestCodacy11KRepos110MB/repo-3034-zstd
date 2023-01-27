@@ -24,12 +24,18 @@ jobs:
         gcc -v
     - name: Building zlib to static link
       run: |
-        git clone --depth 1 --branch v1.2.11 https://github.com/madler/zlib"
+        git clone --depth 1 --branch v1.2.11 https://github.com/madler/zlib
         make -C zlib -f win32/Makefile.gcc libz.a
+        pwd
         ls -las
+        ls -las zlib
     - name: Building zstd
       run: |
-        CPPFLAGS=-I./zlib LDFLAGS=./zlib/libz.a make allzstd MOREFLAGS=-static
+        pwd
+        ls -las
+        ls -las zlib
+        ls -las zlib/libz.a
+        CPPFLAGS=-I../zlib LDFLAGS=../zlib/libz.a make -j allzstd MOREFLAGS=-static
     - name: Create artifacts
       run: |
         ls -las
